@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="SCOOP: open, event-based carbon accounting from the Tufts Auster Center.">
+<link rel="canonical" href="https://website-jade-eta-97.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SCOOP">
+<meta property="og:title" content="SCOOP: Open carbon accounting">
+<meta property="og:description" content="SCOOP: open, event-based carbon accounting from the Tufts Auster Center.">
+<meta property="og:url" content="https://website-jade-eta-97.vercel.app/">
+<meta property="og:image" content="https://website-jade-eta-97.vercel.app/assets/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SCOOP — Carbon, accounted for like money. Reference implementation for IEEE P7802 MMRV.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SCOOP: Open carbon accounting">
+<meta name="twitter:description" content="SCOOP: open, event-based carbon accounting from the Tufts Auster Center.">
+<meta name="twitter:image" content="https://website-jade-eta-97.vercel.app/assets/og.png">
+<title>SCOOP: Open carbon accounting</title>
+<script src="assets/model-viewer.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&amp;family=Geist+Mono:wght@400;500&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F3F5EF}
+a{color:#061C14}a:hover{color:#1F5C3F}
+*{box-sizing:border-box}
+@keyframes scoopFloat{0%,100%{transform:perspective(1200px) rotateY(-14deg) rotateX(8deg) translateY(0)}50%{transform:perspective(1200px) rotateY(-10deg) rotateX(6deg) translateY(-12px)}}
+@keyframes scoopOrbit{from{transform:rotateX(72deg) rotateZ(0deg)}to{transform:rotateX(72deg) rotateZ(360deg)}}
+@keyframes scoopPulse{0%,100%{opacity:.35}50%{opacity:.8}}
+@keyframes scoopLift{0%,100%{transform:translateZ(0)}50%{transform:translateZ(18px)}}
+.scoop-float{animation:scoopFloat 7s ease-in-out infinite}
+.scoop-orbit{animation:scoopOrbit 18s linear infinite}
+.scoop-pulse{animation:scoopPulse 4s ease-in-out infinite}
+.scoop-lift{animation:scoopLift 5s ease-in-out infinite}
+.scoop-tile{transition:transform .25s ease,border-color .25s ease}
+.scoop-tile:hover{transform:translateY(-4px);border-color:#1F5C3F}
+.scoop-tile--planned{opacity:.74}
+.scoop-tile--planned:hover{transform:none;border-color:#DCE1D6}
+.tile-planned{align-self:flex-start;padding:3px 10px;border-radius:999px;border:1px solid #B9C2B4;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#4A5650}
+@media (prefers-reduced-motion:reduce){.scoop-float,.scoop-orbit,.scoop-pulse,.scoop-lift{animation:none}}
+</style>
+<link rel="stylesheet" href="assets/features.css">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="theme-color" content="#061C14">
+<style>
+.wordmark{font-family:'Geist',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;line-height:1;white-space:nowrap}
+.wordmark .co{color:#34D399}
+.wordmark .o2{position:relative;display:inline-block}
+.wordmark .o2 sub{position:absolute;left:-0.14em;bottom:-0.22em;font-size:0.4em;color:#34D399;line-height:1}
+.wordmark.on-light .co,.wordmark.on-light .o2 sub{color:#1F5C3F}
+</style>
+</head>
+<body>
+<div style="width: 100%; background: #F3F5EF; color: #061C14; font-family: 'Geist', system-ui, sans-serif; font-size: 17px; line-height: 1.55">
+
+<!-- HERO (dark) -->
+<section id="top" style="background: #061C14; color: #EEF2EA; padding: 0 24px 96px">
+<div style="max-width: 1240px; margin: 0 auto">
+
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: 24px 0">
+<a href="#top" style="display: flex; align-items: center; gap: 10px; color: #EEF2EA; text-decoration: none">
+<span class="wordmark" role="img" aria-label="SCOOP" style="font-size: 26px; padding-bottom: 6px">S<span class="co">CO</span><span class="o2">O<sub>2</sub></span>P</span>
+</a>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 28px; font-size: 15px">
+<a href="#principles" style="color: #C9D2C5; text-decoration: none">Principles</a>
+<a href="#how" style="color: #C9D2C5; text-decoration: none">How it works</a>
+<a href="#p7802" style="color: #C9D2C5; text-decoration: none">IEEE P7802</a>
+<a href="#projects" style="color: #C9D2C5; text-decoration: none">Projects</a>
+<a href="#developers" style="color: #C9D2C5; text-decoration: none">Developers</a>
+<a href="#portal" style="color: #C9D2C5; text-decoration: none">Portal</a>
+<a href="#portal" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid #3A4C42; color: #EEF2EA; font-weight: 500; text-decoration: none">Sign in</a>
+<a href="#join" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: #EDEFEA; color: #061C14; font-weight: 600; text-decoration: none">Get involved</a>
+</div>
+</nav>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 56px; padding-top: 72px">
+<div style="flex: 1 1 520px; min-width: 0">
+<div style="display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px; border: 1px solid #2A3A31; border-radius: 999px; font-family: 'Geist Mono', monospace; font-size: 13px; color: #C9D2C5">
+<span style="width: 8px; height: 8px; border-radius: 50%; background: #34D399"></span>
+Reference implementation for IEEE P7802 MMRV
+</div>
+<h1 style="margin: 28px 0 0; font-size: clamp(44px, 6.4vw, 88px); line-height: 0.98; letter-spacing: -0.035em; font-weight: 600">Carbon, accounted for <span style="font-weight: 600; color: #34D399">like money.</span></h1>
+<p style="margin: 28px 0 0; max-width: 560px; font-size: 20px; color: #C9D2C5">SCOOP is an open data platform that makes carbon real-time, event-based and traceable to its physical origin, so every tonne can sit in the books next to every dollar.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 40px">
+<a href="#how" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 999px; background: #EDEFEA; color: #061C14; font-weight: 600; text-decoration: none">See how it works
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+<a href="#developers" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 26px; border-radius: 999px; border: 1px solid #3A4C42; color: #EEF2EA; font-weight: 500; text-decoration: none">Read the core model spec</a>
+</div>
+</div>
+
+<!-- Globe + event card -->
+<div style="flex: 1 1 440px; min-width: 0; max-width: 560px">
+<div style="position: relative; width: 100%; max-width: 440px; aspect-ratio: 1 / 1; margin-left: auto">
+<canvas id="globe" role="img" aria-label="Realistic 3D Earth lit by the real position of the sun, with the live position of the International Space Station. Drag to rotate." style="position: absolute; inset: -6%; width: 112%; height: 112%; display: block; touch-action: pan-y; cursor: grab"></canvas>
+<img id="globe-fallback" hidden src="assets/earth.gif" alt="Animated rotating Earth" style="position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover">
+<div id="globe-live" aria-live="off" style="position: absolute; top: 6%; right: -2%; padding: 6px 12px; border-radius: 999px; background: #061C14; border: 1px solid #2A3A31; font-family: 'Geist Mono', monospace; font-size: 12px; color: #C9D2C5">live · sunlight and ISS position</div>
+</div>
+<div class="scoop-float" style="position: relative; margin-top: -150px; max-width: 380px; background: rgba(18, 29, 24, 0.86); backdrop-filter: blur(14px); border: 1px solid #2A3A31; border-radius: 24px; padding: 26px; font-family: 'Geist Mono', monospace; font-size: 14px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45)">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
+<span style="color: #8FA096">carbon_event</span>
+<span style="padding: 4px 10px; border-radius: 999px; background: #1E2E25; color: #34D399; font-size: 12px">EXAMPLE</span>
+</div>
+<div style="margin-top: 22px; font-family: 'Geist', sans-serif; font-size: 44px; font-weight: 600; letter-spacing: -0.03em; color: #EEF2EA">0.0076 <span style="font-size: 22px; color: #8FA096; font-weight: 500">kg CO₂e</span></div>
+<div style="color: #8FA096; margin-top: 4px">Illustrative event · data center project</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin-top: 26px; background: #24342B; border: 1px solid #24342B; border-radius: 14px; overflow: hidden">
+<div style="background: #121D18; padding: 14px"><div style="color: #8FA096; font-size: 12px">asset</div><div style="color: #EEF2EA">server-01 / tenant-A</div></div>
+<div style="background: #121D18; padding: 14px"><div style="color: #8FA096; font-size: 12px">interval</div><div style="color: #EEF2EA">t1 → t2, 15 min</div></div>
+<div style="background: #121D18; padding: 14px"><div style="color: #8FA096; font-size: 12px">energy</div><div style="color: #EEF2EA">0.026 kWh</div></div>
+<div style="background: #121D18; padding: 14px"><div style="color: #8FA096; font-size: 12px">maturity</div><div style="color: #EEF2EA">Level 3 · Defined</div></div>
+</div>
+<div style="margin-top: 22px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #34D399"></span><span style="color: #C9D2C5">power read every ~6 s</span><span style="margin-left: auto; color: #5F7167">sensor</span></div>
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #34D399"></span><span style="color: #C9D2C5">integrated to kWh × grid factor</span><span style="margin-left: auto; color: #5F7167">attribution</span></div>
+<div style="display: flex; align-items: center; gap: 12px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #34D399"></span><span style="color: #C9D2C5">method and coverage recorded</span><span style="margin-left: auto; color: #5F7167">ledger</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Credibility strip -->
+<section style="border-bottom: 1px solid #DCE1D6; padding: 28px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px 40px; font-family: 'Geist Mono', monospace; font-size: 13px; color: #4A5650; text-transform: uppercase; letter-spacing: 0.08em">
+<span>Tufts Auster Center for Environmental Innovation</span>
+<span>Convener · IEEE P7802 working group</span>
+<span>Aligned with IEEE P3469 E-Ledgers</span>
+<span>Open source · Copyleft</span>
+</div>
+<a class="news-pill" href="https://austercenter.tufts.edu/news-events/news/environmental-innovation-initiative-launches-scoop-carbon-accounting" target="_blank" rel="noopener"><span class="news-tag">News · Aug 25, 2026</span><span class="news-title">Environmental Innovation Initiative launches with a SCOOP on carbon accounting</span><span class="news-src">Tufts Auster Center ↗</span></a>
+</section>
+
+<!-- Problem / statement -->
+<section style="padding: 120px 24px 40px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 40px 80px; align-items: flex-end">
+<h2 style="flex: 1 1 560px; margin: 0; font-size: clamp(34px, 4.2vw, 56px); line-height: 1.05; letter-spacing: -0.03em; font-weight: 600">Carbon reporting today is a once-a-year estimate. <span style="color: #6B7770">It should work like an ERP module.</span></h2>
+<p style="flex: 1 1 360px; margin: 0; color: #4A5650">SCOOP measures emissions and removals as events: a specific asset, a specific interval, a specific owner. Every figure carries its method, provenance, uncertainty and assurance, so it can be audited, settled and reconciled across industries.</p>
+</div>
+</section>
+
+<!-- 3D: observation from orbit -->
+<section style="padding: 40px 24px 40px">
+<div style="max-width: 1240px; margin: 0 auto; background: #061C14; color: #EEF2EA; border-radius: 32px; overflow: hidden; display: flex; flex-wrap: wrap; align-items: stretch">
+<div style="flex: 1 1 380px; min-width: 0; padding: clamp(32px, 5vw, 64px); display: flex; flex-direction: column; justify-content: center; gap: 18px">
+<div style="font-family: 'Geist Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #34D399">Observation integrity</div>
+<h2 style="margin: 0; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.025em; font-weight: 600; line-height: 1.1">Every measurement starts somewhere real.</h2>
+<p style="margin: 0; color: #C9D2C5">From a smart power strip on a lab server to a satellite reading the atmosphere, SCOOP keeps the link between a reported tonne and the instrument that observed it. Independent sources, like NASA's Orbiting Carbon Observatory 2, are how higher maturity levels reconcile what companies report.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 20px; font-family: 'Geist Mono', monospace; font-size: 13px; color: #8FA096; padding-top: 14px; border-top: 1px solid #24342B">
+<span>Drag to rotate · scroll to zoom</span>
+<span>Model: NASA 3D Resources (public domain)</span>
+</div>
+</div>
+<div style="flex: 1 1 480px; min-width: 0; position: relative; min-height: 440px; background: #121D18">
+<div aria-hidden="true" style="position: absolute; inset: 0; background-image: linear-gradient(#1C2A23 1px, transparent 1px), linear-gradient(90deg, #1C2A23 1px, transparent 1px); background-size: 40px 40px"></div>
+<model-viewer src="assets/oco2.glb" alt="Interactive 3D model of NASA's Orbiting Carbon Observatory 2 satellite" auto-rotate="" camera-controls="" interaction-prompt="none" shadow-intensity="1" exposure="1.1" camera-orbit="35deg 70deg auto" rotation-per-second="18deg" style="position: absolute; inset: 0; width: 100%; height: 100%; background: transparent"></model-viewer>
+<div style="position: absolute; left: 20px; bottom: 20px; padding: 6px 12px; border-radius: 999px; background: #061C14; border: 1px solid #2A3A31; font-family: 'Geist Mono', monospace; font-size: 12px; color: #C9D2C5">OCO-2 · measures atmospheric CO₂ from orbit</div>
+</div>
+</div>
+</section>
+
+<!-- Principles -->
+<section id="principles" style="padding: 80px 24px 120px">
+<div style="max-width: 1240px; margin: 0 auto">
+<div style="font-family: 'Geist Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #1F5C3F">Seven principles</div>
+<h2 style="margin: 14px 0 48px; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.025em; font-weight: 600; line-height: 1.1">Built to the principles behind P7802.</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+
+<article style="background: #FFFFFF; border: 1px solid #DCE1D6; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 14px; min-height: 230px">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M7 7h10v10H7zM3 12h4M17 12h4M12 3v4M12 17v4"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770">01</span></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em">Interoperability</h3>
+<p style="margin: 0; color: #4A5650; font-size: 15px">Emissions and removals reconcile across industries like debits and credits.</p>
+</article>
+
+<article style="background: #FFFFFF; border: 1px solid #DCE1D6; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 14px; min-height: 230px">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770">02</span></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em">Measuring externalities</h3>
+<p style="margin: 0; color: #4A5650; font-size: 15px">Scope 3 enters the books through crediting and debiting, mirroring cost accounting.</p>
+</article>
+
+<article style="background: #FFFFFF; border: 1px solid #DCE1D6; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 14px; min-height: 230px">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path><path d="M8.5 12l2.5 2.5 4.5-5"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770">03</span></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em">Verifiability</h3>
+<p style="margin: 0; color: #4A5650; font-size: 15px">Recompute any published figure from stored readings and get the same answer.</p>
+</article>
+
+<article style="background: #FFFFFF; border: 1px solid #DCE1D6; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 14px; min-height: 230px">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="5" cy="6" r="2"></circle><circle cx="19" cy="6" r="2"></circle><circle cx="12" cy="19" r="2"></circle><path d="M7 6h10M6 8l5 9M18 8l-5 9"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770">04</span></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em">Decentralization</h3>
+<p style="margin: 0; color: #4A5650; font-size: 15px">No single authority. Sources of truth work the way DNS and IANA do.</p>
+</article>
+
+<article style="background: #FFFFFF; border: 1px solid #DCE1D6; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 14px; min-height: 230px">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 018 0v3"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770">05</span></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em">Privacy</h3>
+<p style="margin: 0; color: #4A5650; font-size: 15px">Evidence crosses trust boundaries. Raw data, customer and workload identities never do.</p>
+</article>
+
+<article style="background: #FFFFFF; border: 1px solid #DCE1D6; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 14px; min-height: 230px">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770">06</span></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em">Scalability</h3>
+<p style="margin: 0; color: #4A5650; font-size: 15px">One core model, adapted to any sector&#39;s projects, many live data streams.</p>
+</article>
+
+<article style="background: #FFFFFF; border: 1px solid #DCE1D6; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 14px; min-height: 230px">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 18c4 0 4-12 8-12s4 12 8 12"></path><circle cx="4" cy="18" r="1.5"></circle><circle cx="20" cy="18" r="1.5"></circle></svg><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770">07</span></div>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.01em">Traceability</h3>
+<p style="margin: 0; color: #4A5650; font-size: 15px">Auditable lineage from every reported quantity back to its source evidence.</p>
+</article>
+
+<article style="background: #34D399; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; min-height: 230px">
+<h3 style="margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15">Each principle ships with a test that proves it.</h3>
+<a href="#developers" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; color: #061C14; font-weight: 600">See the principle map
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+</article>
+
+</div>
+</div>
+</section>
+
+<!-- How it works -->
+<section id="how" style="background: #FFFFFF; border-top: 1px solid #DCE1D6; border-bottom: 1px solid #DCE1D6; padding: 120px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 56px 80px">
+<div style="flex: 1 1 360px; min-width: 0">
+<div style="font-family: 'Geist Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #1F5C3F">How it works</div>
+<h2 style="margin: 14px 0 20px; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.025em; font-weight: 600; line-height: 1.1">From the meter to the registry, without losing the thread.</h2>
+<p style="margin: 0; color: #4A5650">SCOOP sits in the middle of the carbon supply chain. Projects feed it observations; it ties each one to the right asset, owner and interval, then hands verifiable evidence up to accounting systems, exchanges and registries.</p>
+<div style="display: flex; flex-direction: column; gap: 12px; margin-top: 36px">
+<div style="display: flex; gap: 14px; align-items: baseline"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #1F5C3F; min-width: 96px">Observation</span><span style="color: #4A5650; font-size: 15px">Was the physical quantity measured correctly?</span></div>
+<div style="display: flex; gap: 14px; align-items: baseline"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #1F5C3F; min-width: 96px">Attribution</span><span style="color: #4A5650; font-size: 15px">Is it tied to the right asset, customer and time?</span></div>
+<div style="display: flex; gap: 14px; align-items: baseline"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #1F5C3F; min-width: 96px">Settlement</span><span style="color: #4A5650; font-size: 15px">Is the claim issued, transferred or retired correctly?</span></div>
+</div>
+<!-- 3D isometric stack -->
+<div aria-hidden="true" style="height: 300px; margin-top: 40px; perspective: 1400px; display: flex; justify-content: center; align-items: center">
+<div style="position: relative; width: 220px; height: 220px; transform-style: preserve-3d; transform: rotateX(58deg) rotateZ(-42deg)">
+<div style="position: absolute; inset: 0; border-radius: 18px; background: #E7EBE2; border: 1px solid #B9C2B4; transform: translateZ(0px)"></div>
+<div style="position: absolute; inset: 0; border-radius: 18px; background: #D5E6C4; border: 1px solid #B9C2B4; transform: translateZ(34px)"></div>
+<div class="scoop-lift" style="position: absolute; inset: 0; transform-style: preserve-3d">
+<div style="position: absolute; inset: 0; border-radius: 18px; background: #061C14; border: 2px solid #34D399; transform: translateZ(70px); box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.18)"></div>
+</div>
+<div style="position: absolute; inset: 0; border-radius: 18px; background: rgba(255, 255, 255, 0.75); border: 1px solid #B9C2B4; transform: translateZ(112px)"></div>
+<div style="position: absolute; inset: 0; border-radius: 18px; background: rgba(255, 255, 255, 0.55); border: 1px solid #B9C2B4; transform: translateZ(146px)"></div>
+<div style="position: absolute; inset: 0; border-radius: 18px; background: rgba(255, 255, 255, 0.35); border: 1px solid #B9C2B4; transform: translateZ(180px)"></div>
+</div>
+</div>
+</div>
+
+<ol style="flex: 1 1 520px; min-width: 0; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<li style="display: flex; align-items: center; gap: 18px; padding: 18px 22px; border: 1px solid #DCE1D6; border-radius: 16px"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770; width: 24px">06</span><span style="font-weight: 600">Carbon bank / registry</span><span style="margin-left: auto; font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">settlement</span></li>
+<li style="display: flex; align-items: center; gap: 18px; padding: 18px 22px; border: 1px solid #DCE1D6; border-radius: 16px"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770; width: 24px">05</span><span style="font-weight: 600">Inter-enterprise exchange</span><span style="margin-left: auto; font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">evidence, not raw data</span></li>
+<li style="display: flex; align-items: center; gap: 18px; padding: 18px 22px; border: 1px solid #DCE1D6; border-radius: 16px"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770; width: 24px">04</span><span style="font-weight: 600">ERP / enterprise accounting</span><span style="margin-left: auto; font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">books</span></li>
+<li style="display: flex; flex-wrap: wrap; align-items: center; gap: 18px; padding: 26px 22px; border-radius: 16px; background: #061C14; color: #EEF2EA"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #34D399; width: 24px">03</span><span style="font-weight: 600; font-size: 20px">SCOOP event layer</span><span style="margin-left: auto; padding: 4px 12px; border-radius: 999px; background: #34D399; color: #061C14; font-family: 'Geist Mono', monospace; font-size: 12px; font-weight: 500">CORE MODEL</span><span style="flex-basis: 100%; padding-left: 42px; color: #C9D2C5; font-size: 15px">Events, attribution, evidence, provenance and maturity level</span></li>
+<li style="display: flex; align-items: center; gap: 18px; padding: 18px 22px; border: 1px solid #DCE1D6; border-radius: 16px"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770; width: 24px">02</span><span style="font-weight: 600">Project adapter</span><span style="margin-left: auto; font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">server · tenant · tree plot</span></li>
+<li style="display: flex; align-items: center; gap: 18px; padding: 18px 22px; border: 1px solid #DCE1D6; border-radius: 16px"><span style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #6B7770; width: 24px">01</span><span style="font-weight: 600">Sensors, meters, digital twins</span><span style="margin-left: auto; font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">observation</span></li>
+</ol>
+</div>
+</section>
+
+<!-- Liability journey (scroll-driven) -->
+<section id="journey" class="lj" aria-labelledby="lj-title">
+<div class="lj-progress" id="lj-progress"></div>
+<div class="lj-track" id="lj-track">
+<div class="lj-sticky">
+<div class="f-wrap lj-grid">
+<div class="lj-copy">
+<div class="f-eyebrow">The liability journey</div>
+<h2 class="f-h2" id="lj-title">Follow one carbon event from the plug to the books.</h2>
+<ol class="lj-steps" id="lj-steps">
+<li class="lj-step"><span class="n">01</span><div><b>Measure</b><p>A smart power strip samples the server about every six seconds.</p></div></li>
+<li class="lj-step"><span class="n">02</span><div><b>Create the event</b><p>Power over an interval (t1, t2) becomes kWh, then kg CO₂e with the grid factor. A unique token, still to be built, will stop it being counted twice.</p></div></li>
+<li class="lj-step"><span class="n">03</span><div><b>Transfer</b><p>The liability passes to the tenant whose workload drew the power.</p></div></li>
+<li class="lj-step"><span class="n">04</span><div><b>Offset</b><p>The tenant can retire carbon credits against it…</p></div></li>
+<li class="lj-step"><span class="n">05</span><div><b>Discharge</b><p>…or pay a fee to discharge it…</p></div></li>
+<li class="lj-step"><span class="n">06</span><div><b>Geological carbon equity</b><p>…and if nobody takes it, it falls to the geological carbon equity account. Nothing vanishes from the books.</p></div></li>
+</ol>
+</div>
+<div class="lj-stage">
+<svg class="lj-svg" id="lj-svg" viewBox="0 0 640 440" role="img" aria-label="Diagram: a carbon event moves from a server to a carbon event record, to a tenant, then to an offset, a fee, or the geological carbon equity account">
+<g class="bars" id="lj-bars">
+<rect class="bar" x="18" y="160" width="10" height="20" rx="2"></rect><rect class="bar" x="34" y="150" width="10" height="30" rx="2"></rect><rect class="bar" x="50" y="140" width="10" height="40" rx="2"></rect><rect class="bar" x="66" y="154" width="10" height="26" rx="2"></rect><rect class="bar" x="82" y="146" width="10" height="34" rx="2"></rect><rect class="bar" x="98" y="158" width="10" height="22" rx="2"></rect>
+</g>
+<path class="wire" d="M104 220 L168 220"></path>
+<path class="wire" d="M272 220 L336 220"></path>
+<path class="wire" d="M440 220 C485 220 475 80 520 80"></path>
+<path class="wire" d="M440 220 L520 220"></path>
+<path class="wire" d="M440 220 C485 220 475 360 520 360"></path>
+<path class="wire-on" id="lj-p0" d="M104 220 L168 220"></path>
+<path class="wire-on" id="lj-p1" d="M272 220 L336 220"></path>
+<path class="wire-on" id="lj-p2" d="M440 220 C485 220 475 80 520 80"></path>
+<path class="wire-on" id="lj-p3" d="M440 220 L520 220"></path>
+<path class="wire-on" id="lj-p4" d="M440 220 C485 220 475 360 520 360"></path>
+<g class="node" id="lj-n0"><rect x="0" y="190" width="104" height="60" rx="14"></rect><text x="13" y="216">server-01</text><text class="sub" x="13" y="235">SCOOP Lab</text></g>
+<g class="node" id="lj-n1"><rect x="168" y="190" width="104" height="60" rx="14"></rect><text x="180" y="216">CO₂ event</text><text class="sub" x="180" y="235">0.0076 kg*</text></g>
+<g class="node" id="lj-n2"><rect x="336" y="190" width="104" height="60" rx="14"></rect><text x="349" y="216">Tenant A</text><text class="sub" x="349" y="235">liability</text></g>
+<g class="node" id="lj-n3"><rect x="520" y="50" width="120" height="60" rx="14"></rect><text x="534" y="76">Offset</text><text class="sub" x="534" y="95">credits retired</text></g>
+<g class="node" id="lj-n4"><rect x="520" y="190" width="120" height="60" rx="14"></rect><text x="534" y="216">Fee</text><text class="sub" x="534" y="235">discharged</text></g>
+<g class="node" id="lj-n5"><rect x="520" y="330" width="120" height="60" rx="14"></rect><text x="534" y="356">GCE account</text><text class="sub" x="534" y="375">carbon equity</text></g>
+<circle id="lj-token" cx="104" cy="220" r="9" fill="#34D399"></circle>
+<circle id="lj-halo" cx="104" cy="220" r="18" fill="none" stroke="#34D399" stroke-opacity=".35" stroke-width="2"></circle>
+</svg>
+<div class="lj-readout" aria-hidden="true">
+<span class="lj-chip" data-chip="0">~6 s power</span>
+<span class="lj-chip" data-chip="1">token minted</span>
+<span class="lj-chip" data-chip="2">owner: tenant A</span>
+<span class="lj-chip" data-chip="3">settled</span>
+</div>
+<p style="margin:14px 0 0;font-family:'Geist Mono',monospace;font-size:12px;color:#6F8278">* Illustrative values. Keep scrolling to move the event.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- P7802 -->
+<section id="p7802" style="padding: 120px 24px">
+<div style="max-width: 1240px; margin: 0 auto">
+<div style="display: flex; flex-wrap: wrap; gap: 32px 80px; align-items: flex-end">
+<div style="flex: 1 1 560px; min-width: 0">
+<div style="font-family: 'Geist Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #1F5C3F">IEEE P7802</div>
+<h2 style="margin: 14px 0 0; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.025em; font-weight: 600; line-height: 1.1">We don't just implement the standard. We convene it.</h2>
+</div>
+<p style="flex: 1 1 360px; margin: 0; color: #4A5650">P7802 defines a core model that harmonizes industry MMRV methods rather than replacing them. SCOOP convenes the working group, and its code is meant to be the open reference implementation. Meetings are open to anyone.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 56px">
+<div style="border-top: 3px solid #061C14; padding-top: 22px"><div style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #1F5C3F">END OF 2026 · NOW</div><div style="font-size: 24px; font-weight: 600; margin-top: 8px; letter-spacing: -0.01em">Requirements</div><p style="margin: 8px 0 0; color: #4A5650; font-size: 15px">What every compliant project has to carry.</p></div>
+<div style="border-top: 3px solid #B9C2B4; padding-top: 22px"><div style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #4A5650">2027</div><div style="font-size: 24px; font-weight: 600; margin-top: 8px; letter-spacing: -0.01em">Drafting</div><p style="margin: 8px 0 0; color: #4A5650; font-size: 15px">The standard is written, informed by working projects.</p></div>
+<div style="border-top: 3px solid #B9C2B4; padding-top: 22px"><div style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #4A5650">END OF 2028</div><div style="font-size: 24px; font-weight: 600; margin-top: 8px; letter-spacing: -0.01em">Industry review</div><p style="margin: 8px 0 0; color: #4A5650; font-size: 15px">Balloted and opened to the wider industry.</p></div>
+</div>
+
+<div style="margin-top: 72px; background: #FFFFFF; border: 1px solid #DCE1D6; border-radius: 24px; padding: 36px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: baseline">
+<h3 style="margin: 0; font-size: 24px; font-weight: 600; letter-spacing: -0.01em">MMRV maturity levels</h3>
+<span style="color: #4A5650; font-size: 15px">Higher maturity, lower uncertainty, lower recognized emissions.</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 28px">
+<div style="padding: 20px; border-radius: 14px; background: #E7EBE2"><div style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #4A5650">L1</div><div style="font-weight: 600; margin-top: 6px">Participating</div><div style="font-size: 14px; color: #4A5650; margin-top: 4px">Usable data, default factors</div></div>
+<div style="padding: 20px; border-radius: 14px; background: #D5E6C4"><div style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #4A5650">L2</div><div style="font-weight: 600; margin-top: 6px">Managed</div><div style="font-size: 14px; color: #4A5650; margin-top: 4px">Reproducible, version-controlled</div></div>
+<div style="padding: 20px; border-radius: 14px; background: #BDE09A"><div style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #33403A">L3</div><div style="font-weight: 600; margin-top: 6px">Defined</div><div style="font-size: 14px; color: #33403A; margin-top: 4px">Auditable lineage on every object</div></div>
+<div style="padding: 20px; border-radius: 14px; background: #1F5C3F; color: #EEF2EA"><div style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #C9D2C5">L4</div><div style="font-weight: 600; margin-top: 6px">Quantitatively controlled</div><div style="font-size: 14px; color: #C9D2C5; margin-top: 4px">Uncertainty budgets, reconciliation</div></div>
+<div style="padding: 20px; border-radius: 14px; background: #061C14; color: #EEF2EA"><div style="font-family: 'Geist Mono', monospace; font-size: 13px; color: #34D399">L5</div><div style="font-weight: 600; margin-top: 6px">Predictive</div><div style="font-size: 14px; color: #C9D2C5; margin-top: 4px">Forecast and optimize the value chain</div></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Maturity quiz -->
+<section id="maturity-quiz" class="mq" aria-labelledby="mq-title">
+<div class="f-wrap">
+<div class="f-eyebrow">Where do you stand?</div>
+<h2 class="f-h2" id="mq-title">Find your MMRV maturity level in five questions.</h2>
+<div class="mq-card">
+<div class="mq-main">
+<div class="mq-dots" id="mq-dots" aria-hidden="true"><span class="mq-dot"></span><span class="mq-dot"></span><span class="mq-dot"></span><span class="mq-dot"></span><span class="mq-dot"></span></div>
+<p class="mq-q" id="mq-q" aria-live="polite"></p>
+<p class="mq-hint" id="mq-hint"></p>
+<div class="mq-actions" id="mq-actions">
+<button type="button" class="f-btn f-btn--dark" id="mq-yes">Yes</button>
+<button type="button" class="f-btn" id="mq-no">Not yet</button>
+</div>
+<div class="mq-actions" id="mq-done" hidden>
+<button type="button" class="f-btn" id="mq-restart">Start over</button>
+<a href="#join" class="f-btn f-btn--accent" style="text-decoration:none">Talk to us about the next level</a>
+</div>
+</div>
+<div class="mq-side">
+<div class="mq-ladder" id="mq-ladder">
+<div class="mq-rung"><span>Participating</span><span class="l">L1</span></div>
+<div class="mq-rung"><span>Managed</span><span class="l">L2</span></div>
+<div class="mq-rung"><span>Defined</span><span class="l">L3</span></div>
+<div class="mq-rung"><span>Quantitatively controlled</span><span class="l">L4</span></div>
+<div class="mq-rung"><span>Predictive and optimizing</span><span class="l">L5</span></div>
+</div>
+<div class="mq-result" id="mq-result" aria-live="polite"><h3>Answer to climb the ladder</h3><p>Levels follow the P7802 core model. Higher maturity means less uncertainty, and less uncertainty means lower recognized emissions.</p></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Projects (problem-first) -->
+<section id="projects" class="pj" aria-labelledby="pj-title">
+<div class="pj-wrap">
+<div class="pj-kicker">Projects</div>
+<h2 id="pj-title">Start from the problem you already have.</h2>
+<p class="pj-lede">Carbon data today is inconsistent, illiquid, incompatible, opaque and late. Each SCOOP project takes on one of those problems for a real business or policy team, and every project runs on the same open core.</p>
+
+<div class="pj-issues" role="list" aria-label="Problems SCOOP projects address">
+<span role="listitem">Inconsistent</span><span role="listitem">Illiquid</span><span role="listitem">Incompatible</span><span role="listitem">Opaque</span><span role="listitem">Too slow</span>
+</div>
+
+<div class="pj-grid">
+<article class="pj-card" data-project="1">
+<div class="pj-problem"><span class="pj-tag">Too slow · Opaque</span></div>
+<h3>Data center monitor</h3>
+<p class="pj-q">“We can’t see what our compute is emitting until the quarter is over.”</p>
+<p>Shows energy use and carbon emissions at the market interval, from power readings taken every few seconds, so data center managers can judge how AI code efficiency affects emissions and what their renewables actually deliver.</p>
+<div class="pj-meta"><span>Working prototype</span><span>SCOOP Lab, Oregon</span></div>
+</article>
+
+<article class="pj-card" data-project="2">
+<div class="pj-problem"><span class="pj-tag">Illiquid</span></div>
+<h3>Dynamic, high-liquidity carbon exchange</h3>
+<p class="pj-q">“Carbon can’t settle at the speed the rest of the market moves.”</p>
+<p>Explores settling carbon trades at the market interval, simulating digital carbon assets and showing how energy efficiency and data accuracy are rewarded. SCOOP supplies the standard and the apps; operational-scale trading would run on partners’ rails.</p>
+<div class="pj-meta"><span>Early conversations</span><span>Emitters and financial actors</span></div>
+</article>
+
+<article class="pj-card" data-project="3">
+<div class="pj-problem"><span class="pj-tag">Inconsistent · Opaque</span></div>
+<h3>Agroforestry claims portal</h3>
+<p class="pj-q">“Forest carbon claims are hard to compare, audit or act on without a middleman.”</p>
+<p>A portal for specifying, storing and analyzing carbon claims, with what-if analysis for harvest and management decisions. It lets forest owners speak directly to emitters and could speed up auditing by rating agencies. Also planned for the Sabalito Nature Reserve in Costa Rica.</p>
+<div class="pj-meta"><span>Scoping</span><span>Credit side · removals</span></div>
+</article>
+
+<article class="pj-card" data-project="4">
+<div class="pj-problem"><span class="pj-tag">Opaque · Incompatible</span></div>
+<h3>Community impact of data centers</h3>
+<p class="pj-q">“We need to understand what a proposed data center means for our land and energy.”</p>
+<p>Reuses the data center monitor and claims portal so Indigenous communities in Australia can analyze data center impacts, from generation and water to transmission, and bring that data into their own business planning.</p>
+<div class="pj-meta"><span>Scoping</span><span>Builds on the monitor and portal</span></div>
+</article>
+</div>
+<p class="pj-note">All projects are guided by the IEEE P7802 standard, which both shapes and is shaped by them.</p>
+</div>
+</section>
+
+<!-- Feature reuse map -->
+<section id="feature-map" class="fm" aria-labelledby="fm-title">
+<div class="fm-wrap">
+<div class="lm-kicker">Projects → features → requirements</div>
+<h2 id="fm-title">Build a feature once. Reuse it everywhere.</h2>
+<p class="fm-lede">Every project is assembled from shared SCOOP components. Pick a project to see what it uses. Each feature shows how many projects share it.</p>
+<div class="fm-tabs" role="tablist" aria-label="Choose a project">
+<button type="button" role="tab" aria-selected="true" data-p="all">All projects</button>
+<button type="button" role="tab" aria-selected="false" data-p="1">Data center monitor</button>
+<button type="button" role="tab" aria-selected="false" data-p="2">Carbon exchange</button>
+<button type="button" role="tab" aria-selected="false" data-p="3">Agroforestry portal</button>
+<button type="button" role="tab" aria-selected="false" data-p="4">Community impact</button>
+</div>
+<ul class="fm-grid" id="fm-grid" aria-live="polite"></ul>
+<p class="fm-foot"><span class="fm-dot on"></span> used <span class="fm-dot maybe"></span> under discussion · Draft portfolio, October 2026. Each feature traces to project requirements and the seven SCOOP principles.</p>
+</div>
+</section>
+
+<!-- Our role -->
+<section id="role" class="rl" aria-labelledby="rl-title">
+<div class="rl-wrap">
+<div class="pj-kicker">Our role</div>
+<h2 id="rl-title">A utility, not an operator.</h2>
+<p class="rl-lede">Think of SCOOP as the app store, not the rails. We set the open standard and build the reusable apps and prototypes. Partners run the operational-grade, secure, high-volume systems on top of them.</p>
+<div class="rl-cols">
+<div class="rl-col rl-us">
+<div class="rl-h">SCOOP provides</div>
+<ul>
+<li>The open IEEE P7802 core model</li>
+<li>Reusable apps: portals, templates, utilities, mappers, translators and connectors</li>
+<li>Working prototypes that prove each project</li>
+<li>Open source code anyone can audit</li>
+</ul>
+</div>
+<div class="rl-arrow" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+<div class="rl-col rl-them">
+<div class="rl-h">Partners operate</div>
+<ul>
+<li>Production systems at scale</li>
+<li>Secure, regulated infrastructure</li>
+<li>High-volume transaction rails</li>
+<li>Customer-facing services</li>
+</ul>
+</div>
+</div>
+<p class="rl-tag">Streamlined. Connected. Integrated.</p>
+</div>
+</section>
+
+<!-- Restatement time machine -->
+<section id="restatement" class="tm" aria-labelledby="tm-title">
+<div class="f-wrap">
+<div style="display:flex;flex-wrap:wrap;gap:24px 80px;align-items:flex-end">
+<div style="flex:1 1 520px;min-width:0">
+<div class="f-eyebrow">Restatement time machine</div>
+<h2 class="f-h2" id="tm-title">Corrections don't overwrite history. They add to it.</h2>
+</div>
+<p style="flex:1 1 360px;margin:0;color:#4A5650">When a figure is restated, SCOOP keeps the old claim, links it to the new one and redraws the lineage. Drag the slider to see a real kind of mistake from the lab: a mislabeled power socket.</p>
+</div>
+<div class="tm-card">
+<div class="tm-top">
+<div>
+<div style="font-family:'Geist Mono',monospace;font-size:13px;color:#4A5650">server-01 · monthly emissions · illustrative</div>
+<div class="tm-figure" style="margin-top:10px"><span id="tm-num">412.6</span> <small>kg CO₂e</small></div>
+</div>
+<span class="tm-status" id="tm-status">v1 · AS PUBLISHED</span>
+</div>
+<label for="tm-range" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Move between the published figure and the corrected figure</label>
+<input id="tm-range" class="tm-range" type="range" min="0" max="100" value="0" step="1">
+<div class="tm-labels"><span>v1 · as published</span><span>correction found: socket 3 mislabeled</span><span>v2 · restated</span></div>
+<div class="tm-lineage">
+<div class="tm-node"><div class="k">Raw readings</div><div class="v">HS300 socket 3</div><div class="d">power readings, unchanged</div></div>
+<div class="tm-node" data-changes="1"><div class="k">Attribution</div><div class="v" data-v1="Socket 3 → server-01" data-v2="Socket 3 → server-02">Socket 3 → server-01</div><div class="d" data-v1="from the socket label" data-v2="verified by experiment">from the socket label</div></div>
+<div class="tm-node"><div class="k">Emissions factor</div><div class="v">Regional grid</div><div class="d">static factor, unchanged</div></div>
+<div class="tm-node" data-changes="1"><div class="k">Calculation record</div><div class="v" data-v1="engine v0.4.1" data-v2="engine v0.4.2">engine v0.4.1</div><div class="d" data-v1="inputs, outputs, commit a1f9" data-v2="inputs, outputs, commit 7c2e">inputs, outputs, commit a1f9</div></div>
+</div>
+<div class="tm-claims">
+<div class="tm-claim" id="tm-c1"><strong>Claim v1 · 412.6 kg</strong><br><span id="tm-c1-note">Published. Current figure.</span></div>
+<div class="tm-claim" id="tm-c2" style="opacity:.35"><strong>Claim v2 · 287.9 kg</strong><br>Restated. Supersedes v1, which stays on record.</div>
+</div>
+</div>
+</div>
+</section>
+<!-- North Star roadmap -->
+<section id="roadmap" class="ns" aria-labelledby="ns-title">
+<div class="f-wrap ns-head">
+<div style="flex:1 1 520px;min-width:0">
+<div class="f-eyebrow">North Star</div>
+<h2 class="f-h2" id="ns-title">From a standard to a carbon economy.</h2>
+</div>
+<div class="ns-nav">
+<button type="button" class="f-btn" id="ns-prev" aria-label="Scroll roadmap back"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></button>
+<button type="button" class="f-btn f-btn--dark" id="ns-next" aria-label="Scroll roadmap forward"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</div>
+</div>
+<div class="ns-rail">
+<div class="ns-track" id="ns-track" tabindex="0" aria-label="Roadmap, scroll horizontally">
+<article class="ns-card"><div class="ns-year">2026 – 27</div><h3>Network convener</h3><p style="margin:0;color:#4A5650;font-size:15px">Bring industry, regulators and researchers together around one way of counting carbon.</p><p class="ns-quote">“The PMI of carbon regulation.”</p></article>
+<article class="ns-card is-now"><span class="ns-tag">WE ARE HERE</span><div class="ns-year">2026 – 27</div><h3>Standard protocol, API, SDK</h3><p style="margin:0;color:#C9D2C5;font-size:15px">An open-source, copyleft codebase that implements IEEE P7802.</p><p class="ns-quote">“This standard is where to go.”</p></article>
+<article class="ns-card"><div class="ns-year">2027 – 28</div><h3>Education and immersives</h3><p style="margin:0;color:#4A5650;font-size:15px">Training and executive immersives on carbon accounting.</p><p class="ns-quote">For pro-climate learners and shareholders.</p></article>
+<article class="ns-card"><div class="ns-year">2027 – 28</div><h3>Data clearinghouse</h3><p style="margin:0;color:#4A5650;font-size:15px">Rating and certification of carbon data itself.</p><p class="ns-quote">“The Bloomberg of carbon trading.”</p></article>
+<article class="ns-card"><div class="ns-year">2028 – 29</div><h3>What-if simulators</h3><p style="margin:0;color:#4A5650;font-size:15px">Simulate the carbon impact of infrastructure before it is built.</p><p class="ns-quote">Trusted models for investment impact.</p></article>
+<article class="ns-card"><div class="ns-year">2028 – 29</div><h3>Household carbon</h3><p style="margin:0;color:#4A5650;font-size:15px">Consumer and household carbon calculations on the same verified data.</p><p class="ns-quote">Personal decisions based on SCOOP.</p></article>
+</div>
+</div>
+</section>
+
+<!-- Learn: video + resources -->
+<section id="learn" class="lm" aria-labelledby="lm-title">
+<div class="lm-wrap">
+<div class="lm-head">
+<div class="lm-kicker">Learn</div>
+<h2 id="lm-title">Start here, then go deeper.</h2>
+<p>A short watch to set the scene, plus the standards and open data SCOOP builds on.</p>
+</div>
+<div class="lm-grid">
+<div class="lm-video" data-yt="5p426fSlYH4">
+<button type="button" class="lm-play" aria-label="Play video (loads YouTube)">
+<img src="https://i.ytimg.com/vi/5p426fSlYH4/hqdefault.jpg" alt="" loading="lazy" decoding="async" onerror="this.remove()">
+<span class="lm-play-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>
+<span class="lm-play-note">Click to play · loads from YouTube</span>
+</button>
+<a class="lm-yt-link" href="https://www.youtube.com/watch?v=5p426fSlYH4" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+</div>
+<ul class="lm-list">
+<li><a href="https://austercenter.tufts.edu/news-events/news/environmental-innovation-initiative-launches-scoop-carbon-accounting" target="_blank" rel="noopener"><span class="lm-tag">News</span><strong>SCOOP launch announcement</strong><span>Tufts Auster Center on why the Environmental Innovation Initiative started SCOOP.</span></a></li>
+<li><a href="https://standards.ieee.org/ieee/7802/11238/" target="_blank" rel="noopener"><span class="lm-tag">Standard</span><strong>IEEE P7802</strong><span>The working group's project page for the core carbon accounting model.</span></a></li>
+<li><a href="https://ghgprotocol.org/" target="_blank" rel="noopener"><span class="lm-tag">Framework</span><strong>GHG Protocol</strong><span>The most widely used method for Scope 1, 2 and 3 emissions.</span></a></li>
+<li><a href="https://www.iso.org/standard/66453.html" target="_blank" rel="noopener"><span class="lm-tag">Standard</span><strong>ISO 14064-1</strong><span>Quantifying and reporting greenhouse gases at the organization level.</span></a></li>
+<li><a href="https://verra.org/" target="_blank" rel="noopener"><span class="lm-tag">Registry</span><strong>Verra</strong><span>Runs the Verified Carbon Standard, the largest voluntary credit program.</span></a></li>
+<li><a href="https://climatetrace.org/" target="_blank" rel="noopener"><span class="lm-tag">Open data</span><strong>Climate TRACE</strong><span>Independent, asset-level emissions estimates from satellites and AI.</span></a></li>
+<li><a href="https://greensoftware.foundation/standards/sci/" target="_blank" rel="noopener"><span class="lm-tag">Standard</span><strong>Software Carbon Intensity</strong><span>The Green Software Foundation's spec for measuring software emissions.</span></a></li>
+</ul>
+</div>
+</div>
+</section>
+
+<!-- Developers -->
+<section id="developers" style="padding: 120px 24px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 56px 80px; align-items: center">
+<div style="flex: 1 1 400px; min-width: 0">
+<div style="font-family: 'Geist Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #1F5C3F">Open protocol</div>
+<h2 style="margin: 14px 0 20px; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.025em; font-weight: 600; line-height: 1.1">Ask any number where it came from.</h2>
+<p style="margin: 0; color: #4A5650">A self-service API for developers, providers, policy makers and auditors. A read-only v0 is live now with the data center prototype&rsquo;s measurements, so you can check every figure against its samples. Schemas in JSON Schema with JSON-LD context, exportable to RDF, are planned. Copyleft and developed in the open.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px">
+<a href="https://github.com/Carbon-Offset-Open-Platform" style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 999px; background: #061C14; color: #EEF2EA; font-weight: 600; text-decoration: none">GitHub organization</a>
+<a href="/api/docs" style="display: inline-flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 999px; border: 1px solid #1F5C3F; color: #1F5C3F; font-family: 'Geist Mono', monospace; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none">API docs · v0</a>
+</div>
+</div>
+<div style="flex: 1 1 520px; min-width: 0; background: #061C14; border-radius: 24px; padding: 28px; font-family: 'Geist Mono', monospace; font-size: 14px; line-height: 1.7; color: #C9D2C5; overflow-x: auto">
+<div style="display: flex; gap: 8px; margin-bottom: 20px"><span style="width: 10px; height: 10px; border-radius: 50%; background: #2A3A31"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #2A3A31"></span><span style="width: 10px; height: 10px; border-radius: 50%; background: #2A3A31"></span><span style="margin-left: auto; font-size: 12px; color: #5F7167">planned endpoints · illustrative</span></div>
+<div><span style="color: #34D399">GET</span> /v0/events/<span style="color: #F2B37C">{id}</span>/lineage</div>
+<div style="color: #5F7167; margin-top: 12px">// response</div>
+<div style="white-space: pre; color: #EEF2EA">{
+  "event": "evt_…",
+  "attributed_kg_co2e": 0.0076,
+  "maturity_level": 3,
+  "method": "integrate(power) × grid_factor",
+  "provenance": "sha256:9f3a…c71e",
+  "uncertainty": "[TBD]",
+  "lineage": [ "reading_…", "reading_…" ]
+}</div>
+</div>
+</div>
+</section>
+
+<!-- Portal -->
+<section id="portal" style="background: #FFFFFF; border-top: 1px solid #DCE1D6; border-bottom: 1px solid #DCE1D6; padding: 120px 24px; margin-bottom: 120px">
+<div style="max-width: 1240px; margin: 0 auto">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="flex: 1 1 520px; min-width: 0">
+<div style="font-family: 'Geist Mono', monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #1F5C3F">SCOOP Portal</div>
+<h2 style="margin: 14px 0 0; font-size: clamp(30px, 3.4vw, 44px); letter-spacing: -0.025em; font-weight: 600; line-height: 1.1">Everything in one place, for every role.</h2>
+</div>
+<span style="display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 24px; border-radius: 999px; border: 1px solid #B9C2B4; color: #4A5650; font-family: 'Geist Mono', monospace; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase">Portal in development</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; margin-top: 48px">
+
+<div class="scoop-tile scoop-tile--planned" style="display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid #DCE1D6; border-radius: 20px; background: #F3F5EF; color: #061C14">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"></rect><path d="M7 15l3-4 3 2 4-6"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">Operators</span></div>
+<div style="font-size: 20px; font-weight: 600">Live dashboard</div>
+<div style="font-size: 15px; color: #4A5650">Real-time emissions by asset, tenant and interval.</div>
+<span class="tile-planned">Planned</span>
+</div>
+
+<div class="scoop-tile scoop-tile--planned" style="display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid #DCE1D6; border-radius: 20px; background: #F3F5EF; color: #061C14">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"></circle><path d="M20 20l-4.5-4.5"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">Auditors</span></div>
+<div style="font-size: 20px; font-weight: 600">Event explorer</div>
+<div style="font-size: 15px; color: #4A5650">Trace any figure back to its raw readings and method.</div>
+<span class="tile-planned">Planned</span>
+</div>
+
+<div class="scoop-tile scoop-tile--planned" style="display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid #DCE1D6; border-radius: 20px; background: #F3F5EF; color: #061C14">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">Finance</span></div>
+<div style="font-size: 20px; font-weight: 600">Carbon ledger</div>
+<div style="font-size: 15px; color: #4A5650">Liabilities and credits, with an auditable entry history.</div>
+<span class="tile-planned">Planned</span>
+</div>
+
+<div class="scoop-tile scoop-tile--planned" style="display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid #DCE1D6; border-radius: 20px; background: #F3F5EF; color: #061C14">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">Developers</span></div>
+<div style="font-size: 20px; font-weight: 600">API keys</div>
+<div style="font-size: 15px; color: #4A5650">Self-service write access to events, lineage and evidence. Read-only docs are live at <a href="/api/docs" style="color:#1F5C3F">/api/docs</a>.</div>
+<span class="tile-planned">Planned</span>
+</div>
+
+<div class="scoop-tile scoop-tile--planned" style="display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid #DCE1D6; border-radius: 20px; background: #F3F5EF; color: #061C14">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M12 3v18M3 12h18"></path><rect x="6" y="6" width="12" height="12" rx="2"></rect></svg><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">Industry partners</span></div>
+<div style="font-size: 20px; font-weight: 600">Project starter</div>
+<div style="font-size: 15px; color: #4A5650">Start a SCOOP project from your industry code.</div>
+<span class="tile-planned">Planned</span>
+</div>
+
+<div class="scoop-tile scoop-tile--planned" style="display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid #DCE1D6; border-radius: 20px; background: #F3F5EF; color: #061C14">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 20V14M10 20V10M16 20V6M22 20V3"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">Organizations</span></div>
+<div style="font-size: 20px; font-weight: 600">Maturity self-assessment</div>
+<div style="font-size: 15px; color: #4A5650">Find your MMRV level and what it takes to reach the next.</div>
+<span class="tile-planned">Planned</span>
+</div>
+
+<a href="https://standards.ieee.org/ieee/7802/11238/" class="scoop-tile" style="display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid #DCE1D6; border-radius: 20px; background: #F3F5EF; text-decoration: none; color: #061C14">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.5"></circle><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6M15 14.5c3 0 6 2 6 5.5"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">Standards</span></div>
+<div style="font-size: 20px; font-weight: 600">P7802 working group</div>
+<div style="font-size: 15px; color: #4A5650">The IEEE project page, meetings and drafts.</div>
+</a>
+
+<a href="https://github.com/Carbon-Offset-Open-Platform" class="scoop-tile" style="display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid #DCE1D6; border-radius: 20px; background: #F3F5EF; text-decoration: none; color: #061C14">
+<div style="display: flex; justify-content: space-between; align-items: center"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1F5C3F" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="6" r="2"></circle><circle cx="6" cy="18" r="2"></circle><circle cx="18" cy="9" r="2"></circle><path d="M6 8v8M18 11c0 4-6 3-12 5"></path></svg><span style="font-family: 'Geist Mono', monospace; font-size: 12px; color: #4A5650">Open source</span></div>
+<div style="font-size: 20px; font-weight: 600">GitHub organization</div>
+<div style="font-size: 15px; color: #4A5650">Core model, projects and the data center monitor.</div>
+</a>
+
+</div>
+</div>
+</section>
+
+<!-- About / people -->
+<section id="about" class="ab" aria-labelledby="ab-title">
+<div class="ab-wrap">
+<div class="ab-head">
+<div class="lm-kicker">About</div>
+<h2 id="ab-title">The people behind SCOOP.</h2>
+<p>SCOOP is housed in the Tufts Auster Center's Environmental Innovation Initiative, which brings together researchers, citizens and managers with expertise in sustainability science, data science and financial accounting to make environmental measurement more transparent, credible and inclusive.</p>
+</div>
+<div class="ab-grid">
+<article class="ab-card">
+<div class="ab-photo" data-initials="KP"><img src="https://austercenter.tufts.edu/sites/g/files/lrezom1026/files/styles/large/public/2026-08/katrina-pugh.jpg.jpeg?itok=0GCs_JEq" alt="Portrait of Katrina Pugh" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div>
+<div class="ab-body">
+<h3>Katrina Pugh, Ph.D., MS/MBA</h3>
+<div class="ab-role">About the Faculty Fellow</div>
+<p>Katrina (Kate) Pugh is Auster Center’s Environmental Innovation Faculty Fellow and teaches at Tufts Gordon Institute's MS in Engineering Management. Dr. Pugh is a consultant, researcher, and educator focused on strategy, networks, and sustainability. Dr. Pugh leverages AI to analyze social systems — such as how conversation features influence outcomes. She employs systems thinking and quantitative modeling to improve knowledge sharing, open source, impact networks, and project performance. She co-leads sustainability conversation skills-building through the Conversation for Civility network and teaches changemakers on impact networks as a Partner with Weaving Futures. She has been published in various journals, including KM for Development Journal, MIT Sloan Management Review, and Harvard Business Review. She is the author of <em>Sharing Hidden Know-How</em>. Dr. Pugh is an Adjunct Professor for Columbia University’s Information and Knowledge Strategy master’s program, where she also served as Academic Director. She earned a Bachelor of Arts degree in economics from Williams College, a Master of Science degree and an MBA from the Massachusetts Institute of Technology, and a PhD in ecology and environmental sciences from the University of Maine.</p>
+</div>
+</article>
+<article class="ab-card">
+<div class="ab-photo" data-initials="EC"><img src="https://austercenter.tufts.edu/sites/g/files/lrezom1026/files/styles/large/public/2026-08/Enrique.jpeg?itok=B9-9ayX8" alt="Portrait of Enrique Castro-Leon" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div>
+<div class="ab-body">
+<h3>Enrique Castro-Leon, Ph.D.</h3>
+<div class="ab-role">About the Sponsor and Engineering Advisor</div>
+<p>Enrique Castro-Leon is Founder and Executive Director of the SCOOP Carbon Accounting Project, a volunteer-driven, open-source initiative developing cross-industry information technology frameworks for environmental accounting, beginning with greenhouse gas accounting. The project's objectives are to advance environmental accounting toward a level of rigor comparable to financial accounting and to facilitate the acquisition, exchange, and assurance of environmental data across supply chains and organizational boundaries. SCOOP research and development activities will be conducted under the leadership of the Auster SCOOP Environmental Innovation Initiative, where he serves as a member of the Board of Advisors.</p>
+<p>Dr. Castro-Leon is also Chair of the IEEE P7802 Standards Working Group, which is developing standards for measurement, monitoring, reporting, and verification (MMRV) in climate action projects. In addition, he is Chief Technology Officer and a founding member of OptimiLabs, a startup focused on systems integration and technology innovation. His professional experience includes leadership roles at Intel, where he helped drive the transformation of traditional engineering laboratories into cloud-based Lab-as-a-Service environments. He also led initiatives to integrate power monitoring and control capabilities into data center solutions and, as an enterprise architecture consultant, advised senior executives on technology strategy, integration, and transformation.</p>
+<p>His academic experience includes appointments as Adjunct Professor at Portland State University, the Oregon Graduate Institute, and the University of Costa Rica. Dr. Castro-Leon has authored or co-authored four books, contributed to IEEE publications and peer-reviewed research, and is an inventor on three patents.</p>
+<p>He holds a B.S. in Electrical Engineering from the University of Costa Rica, and both an M.S. in Electrical Engineering and Computer Science and a Ph.D. in Electrical Engineering from Purdue University.</p>
+</div>
+</article>
+</div>
+<a class="ab-src" href="https://austercenter.tufts.edu/initiatives/environmental-innovation" target="_blank" rel="noopener">Read more on the Auster Center site ↗</a>
+</div>
+</section>
+
+<!-- CTA -->
+<section id="join" style="padding: 0 24px 120px">
+<div style="max-width: 1240px; margin: 0 auto; background: #061C14; border-radius: 32px; padding: clamp(40px, 6vw, 80px); display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; justify-content: space-between">
+<h2 style="flex: 1 1 520px; margin: 0; font-size: clamp(36px, 5vw, 68px); line-height: 1; letter-spacing: -0.035em; font-weight: 600; color: #EDEFEA">Help write the rules carbon runs on.</h2>
+<div style="flex: 0 1 380px; display: flex; flex-direction: column; gap: 16px">
+<p style="margin: 0; color: #C9D2C5">Researchers, industry partners, auditors and students: join the P7802 working group or bring us a project.</p>
+<form id="join-form" style="display: flex; flex-wrap: wrap; gap: 10px">
+<label for="email" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Email address</label>
+<input id="email" type="email" placeholder="you@organization.org" style="flex: 1 1 200px; min-height: 52px; padding: 0 20px; border-radius: 999px; border: 1px solid #2A3A31; background: #F3F5EF; font: inherit; font-size: 16px; color: #061C14">
+<button type="submit" id="join-submit" style="min-height: 52px; padding: 0 24px; border-radius: 999px; border: 0; background: #EDEFEA; color: #061C14; font: inherit; font-weight: 600; cursor: pointer">Get involved</button>
+</form>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer style="border-top: 1px solid #DCE1D6; padding: 40px 24px 56px">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; font-size: 14px; color: #4A5650">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span class="wordmark on-light" role="img" aria-label="SCOOP" style="font-size: 24px; color: #061C14; padding-bottom: 8px">S<span class="co">CO</span><span class="o2">O<sub>2</sub></span>P</span>
+<span>Sustainable Carbon Options with Open Protocols</span>
+<span>An initiative of the Tufts Auster Center for Environmental Innovation</span>
+<span style="font-size: 12px; margin-top: 8px">Globe textures: Solar System Scope (CC BY 4.0), via three.js (MIT). OCO-2 model: NASA 3D Resources, public domain. Live data: wheretheiss.at, National Grid ESO Carbon Intensity API. 3D viewer: Google model-viewer, Apache 2.0.</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<a href="#principles" style="color: #4A5650">Principles</a>
+<a href="#p7802" style="color: #4A5650">IEEE P7802</a>
+<a href="#learn" style="color: #4A5650">Learn</a>
+<a href="#about" style="color: #4A5650">About</a>
+<a href="https://github.com/Carbon-Offset-Open-Platform" style="color: #4A5650">GitHub</a>
+<a href="mailto:Katrina.Pugh@tufts.edu" style="color: #4A5650">Katrina.Pugh@tufts.edu</a>
+</div>
+</div>
+</footer>
+
+</div>
+<script src="assets/features.js"></script>
+<script type="module" src="assets/globe.js"></script>
+<script>
+// No backend yet: hand the enquiry to the visitor's mail client.
+document.getElementById('join-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var from = document.getElementById('email').value.trim();
+  var body = 'I would like to get involved with SCOOP.\n\n'
+           + (from ? 'My email: ' + from + '\n' : '')
+           + '\nSent from ' + location.href;
+  window.location.href = 'mailto:Katrina.Pugh@tufts.edu'
+    + '?subject=' + encodeURIComponent('SCOOP / IEEE P7802 \u2014 getting involved')
+    + '&body=' + encodeURIComponent(body);
+});
+</script>
+</body>
+</html>
